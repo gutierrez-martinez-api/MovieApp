@@ -1,0 +1,6 @@
+.idea/*
+*.iml
+.DS_STORE
+
+#this is the API to be ignore so it  no go to github
+js/keys.js
