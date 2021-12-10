@@ -8,6 +8,9 @@ $(document).ready(function () {
 //  we should be able to delete this
 //     const serverURL = 'sordid-psychedelic-nylon';
 
+/** VARIABLES */
+let movieList = $('#movies')
+
 
 //fadeout loading message, removing div to give space for movies
     $('#main').load("body", function(e) {
@@ -25,7 +28,8 @@ $(document).ready(function () {
             .then(data => {
                 // console.log(data);
                 for (let property of data) {
-                    console.log(`Movie List:\nTitle: ${property.title}\nActors:${property.actors}\nYear: ${property.year}`)
+                    // console.log(`Movie List:\nTitle: ${property.title}\nActors:${property.actors}\nYear: ${property.year}`);
+                    $('#movies').append(`<p>Title: ${property.title}</p><p>Actors: ${property.actors}</p>`)
                 }
             })
             .catch(err => console.error("This is your err:", err));
