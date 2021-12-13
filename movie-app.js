@@ -1,23 +1,22 @@
 "use strict";
 
 
-
 $(document).ready(function () {
 //  url for API
     const API_URL = 'https://sordid-psychedelic-nylon.glitch.me/movies'
-    const OMDB_API ='http://www.omdbapi.com/?i=tt3896198&apikey=635169e7'
+    const OMDB_API = 'http://www.omdbapi.com/?i=tt3896198&apikey=635169e7'
 
-/** VARIABLES */
-let movieList = $('#movies')
+    /** VARIABLES */
+    let movieList = $('#movies')
 
 
 // fadeout loading message, removing div to give space for movies
 
 
-    $('#main').load("body", function() {
-        $('#load-icon').hide(5000, function() {
+    $('#main').load("body", function () {
+        $('#load-icon').hide(5000, function () {
             $('#div').remove();
-             getAllMovies();// added function
+            getAllMovies();// added function
         });
     });
 
@@ -36,13 +35,13 @@ let movieList = $('#movies')
                     // console.log(`Movie List:\nTitle: ${property.title}\nActors:${property.actors}\nYear: ${property.year}`);
                     // added div class cards/img property and buttons
                     $('#movies').append(`<div class="col-md-3 my-col cards">
-                    <img class="editPoster" id="poster" src="${property.poster}">
+                    <img class="editPoster" id="editPoster" src="${property.poster}">
                     <div class="card-body card-inf ">
-                    <h4 class="editTitle" id="tittle">${property.title}</h4>
-                    <p class="editYear" id="year">${property.year}</p>
-                    <p class="editActors" id="actors">Cast: ${property.actors}</p>
-                    <p class="editGenre" id="genre">${property.genre}</p>
-                    <p class="editRating" id="rating">Rating: ${property.rating}</p>
+                    <h4 class="editTitle" id="editTitle">${property.title}</h4>
+                    <p class="editYear" id="editYear">${property.year}</p>
+                    <p class="editActors" id="editActors">Cast: ${property.actors}</p>
+                    <p class="editGenre" id="editGenre">${property.genre}</p>
+                    <p class="editRating" id="editRating">Rating: ${property.rating}</p>
                     <button type="submit" data-id=${property.id}  class="btn-md btn-primary editButton" >Edit Movie</button>
                     <button type="button" data-id=${property.id} class="btn-md btn-danger deleteButton" >Delete Movie</button>
                     </div>
@@ -76,16 +75,16 @@ let movieList = $('#movies')
                         "actors": $(this).parent(".card-inf").children(".editActors").text()
 
                     }
-                  let patchOPT ={
+                    let patchOPT = {
                         method: 'PATCH',
-                      headers: {
+                        headers: {
                             'Conctent-Type': 'application/json',
-                      },
-                      body: JSON.stringify(editMovie)
-                  };
+                        },
+                        body: JSON.stringify(editMovie)
+                    };
                     //
                     let editInputVal = $(this).attr('data-value');
-                    fetch(`https://sordid-psychedelic-nylon.glitch.me/movies/${editInputVal}`,patchOPT).then(getAllMovies)
+                    fetch(`https://sordid-psychedelic-nylon.glitch.me/movies/${editInputVal}`, patchOPT).then(getAllMovies)
                 });
             })
             .catch(err => console.error("This is your err:", err));
@@ -94,15 +93,15 @@ let movieList = $('#movies')
 
 
 //function to add movies to glitch DB
-    $('#save-button').click ((e) => {
-        e.preventDefault()
+    $('#save-button').click((e) => {
+        e.preventDefault();
         let newMovie = {
-            "title" : $('#title').val(),
-            "rating" : $('#rating').val(),
-            "poster" : $("#poster").val(),
-            "year" : $('#year').val(),
-            "genre" : $('#genre').val(),
-           "actors" : $('#actors').val(),
+            'title': $('#title').val(),
+            'rating': $('#rating').val(),
+            'poster': $("#poster").val(),
+            'year': $('#year').val(),
+            'genre': $('#genre').val(),
+            'actors': $('#actors').val(),
         };
         const post = {
             method: 'POST',
@@ -111,25 +110,27 @@ let movieList = $('#movies')
             },
             body: JSON.stringify(newMovie),
         };
-        fetch("https://sordid-psychedelic-nylon.glitch.me/movies",post)
-            // .then(resp => resp.json())
+        // console.log(newMovie);
+        // console.log(newMovie.rating);
+        // console.log(newMovie.year);
+        return fetch(`${API_URL}`, post)
+            .then(resp => resp.json())
             .then(getAllMovies)
-        console.log(newMovie)
     });
 
-// GET REQUEST BY ID
-    let getMovieById = (id) => {
-        return fetch(`${API_URL}/${id}`)
-            .then(resp => resp.json())
-            .then(data => {
-                console.log("This is your single movie data: ", data);
-                // console.log(`Console Logging\nTitle: ${data.title} \nDirector: ${data.director} \nActor(s): ${data.actors} \nYear: ${data.year}`);
-                return `\nTitle: ${data.title} \nDirector: ${data.director} \nActor(s): ${data.actors} \nYear: ${data.year}`;
-            })
-            .catch(err => console.error("This is your err:", err))
-    }
-
-    getMovieById(2).then(data => console.log("This is your selected movie: ", data));
+// // GET REQUEST BY ID
+//     let getMovieById = (id) => {
+//         return fetch(`${API_URL}/${id}`)
+//             .then(resp => resp.json())
+//             .then(data => {
+//                 console.log("This is your single movie data: ", data);
+//                 // console.log(`Console Logging\nTitle: ${data.title} \nDirector: ${data.director} \nActor(s): ${data.actors} \nYear: ${data.year}`);
+//                 return `\nTitle: ${data.title} \nDirector: ${data.director} \nActor(s): ${data.actors} \nYear: ${data.year}`;
+//             })
+//             .catch(err => console.error("This is your err:", err))
+//     }
+//
+//     getMovieById(3).then(data => console.log("This is your selected movie: ", data));
 
 //  new object variable
 // //  will use once we start working on creating/adding new movies
