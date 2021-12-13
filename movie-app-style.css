@@ -12,6 +12,16 @@
     width: 100%;
 }
 
+#add-form{
+    left:    0;
+    right:   0;
+    z-index : 100;
+    filter : alpha(opacity=100);
+    bottom: 0;
+    display: none
+}
+
+
 @media(min-width: 960px){
     #movies .col md-3{
         height: 520px;
