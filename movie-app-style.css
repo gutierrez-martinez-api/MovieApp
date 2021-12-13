@@ -2,4 +2,21 @@
     background-image: url("https://tenor.com/view/loop-loading-loading-gif-20622571");
 }
 
+.search-inp{
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 10px;
+}
 
+#movies img #movie img{
+    width: 100%;
+}
+
+@media(min-width: 960px){
+    #movies .col md-3{
+        height: 520px;
+    }
+    #movies .col-md-3 img{
+        height: 450px;
+    }
+}
