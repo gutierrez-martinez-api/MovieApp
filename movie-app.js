@@ -34,16 +34,16 @@ $(document).ready(function () {
                 for (let property of data) {
                     // console.log(`Movie List:\nTitle: ${property.title}\nActors:${property.actors}\nYear: ${property.year}`);
                     // added div class cards/img property and buttons
-                    $('#movies').append(`<div class="col-md-3 my-col cards">
-                    <img class="editPoster" id="editPoster" src="${property.poster}">
-                    <div class="card-body card-inf ">
-                    <h4 class="editTitle" id="editTitle">${property.title}</h4>
-                    <p class="editYear" id="editYear">${property.year}</p>
-                    <p class="editActors" id="editActors">Cast: ${property.actors}</p>
-                    <p class="editGenre" id="editGenre">${property.genre}</p>
-                    <p class="editRating" id="editRating">Rating: ${property.rating}</p>
-                    <button type="submit" data-id=${property.id}  class="btn-md btn-primary editButton" >Edit Movie</button>
-                    <button type="button" data-id=${property.id} class="btn-md btn-danger deleteButton" >Delete Movie</button>
+                    $('#movies').append(`<div class="col-md-3 my-col cards card-inf2" >
+                    <img class="posterImg" id="posterImg" contenteditable="true" type="file" src="${property.poster}">
+                    <div  class="card-body card-inf">                  
+                    <h4  class="editTitle" id="editTitle" contenteditable="true">${property.title}</h4>
+                    <p  class="editYear" id="editYear" contenteditable="true">${property.year}</p>
+                    <p  class="editActors" id="editActors" contenteditable="true">Cast: ${property.actors}</p>
+                    <p  class="editGenre" id="editGenre" contenteditable="true">${property.genre}</p>
+                    <p  class="editRating" id="editRating" contenteditable="true"> ${property.rating}</p>
+                    <button type="submit" data-id=${property.id.toString()}  class="btn-md btn-primary editButton" >Edit Movie</button>
+                    <button type="button" data-id=${property.id.toString()} class="btn-md btn-danger deleteButton" >Delete Movie</button>
                     </div>
                     </div>`)
                 }
@@ -58,7 +58,7 @@ $(document).ready(function () {
                             'content-type': 'application/json'
                         }
                     };
-                    let inputVal = $('#movie-id-delete').val();
+                    let inputVal = $(this).data("id");
                     fetch(`https://sordid-psychedelic-nylon.glitch.me/movies/${movieDataAttr}`, deleteMovie)
                         .then(getAllMovies)
                 })
@@ -68,7 +68,7 @@ $(document).ready(function () {
                 $('.editButton').click(function () {
                     let editMovie = {
                         "title": $(this).parent(".card-inf").children(".editTitle").text(),
-                        "poster": $(this).parent(".card-inf").children(".editPoster").text(),
+                        "poster": $(this).parent(".card-inf2").children(".editPoster").image(),
                         "year": $(this).parent(".card-inf").children(".editYear").text(),
                         "genre": $(this).parent(".card-inf").children(".editGenre").text(),
                         "rating": $(this).parent(".card-inf").children(".editRating").text(),
@@ -83,16 +83,24 @@ $(document).ready(function () {
                         body: JSON.stringify(editMovie)
                     };
                     //
-                    let editInputVal = $(this).attr('data-value');
+                    let editInputVal =  $(this).data("id");
                     fetch(`https://sordid-psychedelic-nylon.glitch.me/movies/${editInputVal}`, patchOPT).then(getAllMovies)
                 });
             })
             .catch(err => console.error("This is your err:", err));
     }
-    setTimeout(getAllMovies, 5000);
+    setTimeout(getAllMovies, 4000);
 
 
 //function to add movies to glitch DB
+    $(document).ready(function() {
+        setTimeout(function(){
+            $("#add-form").show();
+        },5000)
+
+    });
+
+
     $('#save-button').click((e) => {
         e.preventDefault();
         let newMovie = {
