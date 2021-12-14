@@ -4,8 +4,8 @@
 $(document).ready(function () {
 //  url for API
     const API_URL = 'https://sordid-psychedelic-nylon.glitch.me/movies'
-    const OMDB_API = 'http://www.omdbapi.com/?i=tt3896198&apikey=635169e7'
-
+   //must delete this and add the key on keys/js // const OMDB_API = 'http://www.omdbapi.com/?i=tt3896198&apikey=635169e7'
+    let url = "http://www.omdbapi.com/?apikey=" + OMDB_API; // to use on search
     /** VARIABLES */
     let movieList = $('#movies')
 
@@ -59,7 +59,7 @@ $(document).ready(function () {
                         }
                     };
                     let inputVal = $(this).data("id");
-                    fetch(`https://sordid-psychedelic-nylon.glitch.me/movies/${movieDataAttr}`, deleteMovie)
+                    fetch(`https://sordid-psychedelic-nylon.glitch.me/movies/${inputVal}`, deleteMovie)
                         .then(getAllMovies)
                 })
                 // console.log('something got deleted?')
@@ -100,7 +100,7 @@ $(document).ready(function () {
 
     });
 
-//this is a comment
+//this is a comment//DELETE THIS COMMENT
     $('#save-button').click((e) => {
         e.preventDefault();
         let newMovie = {
@@ -139,6 +139,61 @@ $(document).ready(function () {
 //     }
 //
 //     getMovieById(3).then(data => console.log("This is your selected movie: ", data));
+
+
+
+    /*USING OMDDB*/
+
+    $('#searchForm').on('submit', (e) => {
+        e.preventDefault();
+        // console.log($('#searchText').val()); // test
+
+        let searchText=($('#searchText').val());// input search
+        let results = ""; //empty div to display movie info
+
+        // AJAX METHOD//
+        $.ajax({
+            method:'GET',
+            url: url + "&t=" + searchText,
+            success: function (data){
+                console.log(data);// to test
+                results= `
+          <div class="container-fluid ">
+          <img style="float:left" class="img-thumbnail" width="400"height="400" src="${data.Poster}"/>
+           </div>
+           <br>
+          <div class="mx-lg-2  container-fluid justify-content-center col-9">
+          <h2>${data.Title}</h2>
+          <p>${data.Year}</p>
+          <p>${data.Actors}</p>
+          <p>${data.Genre}</p>
+          <p>${data.Rating}</p>
+          <p>${data.Plot}</p>
+          </div> 
+          `;
+                $("#results").append(results)
+
+            }
+        })
+
+
+    });
+    $('#searchForm ').on('submit' ,(e) => {
+        e.preventDefault();
+        let x = document.getElementById("main-div");
+        let y = document.getElementById("results")
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    })/// still working on replace information when new input on search is typed
+
+
+
+
+
+    //DELETE THE FOLLOWING:
 
 //  new object variable
 // //  will use once we start working on creating/adding new movies
